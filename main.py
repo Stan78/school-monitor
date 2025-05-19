@@ -63,5 +63,10 @@ def index():
 
 @app.route('/run')
 def run_check():
-    check_sites()
-    return "✅ Check completed."
+    try:
+        check_sites()
+        return "✅ Check completed."
+    except Exception as e:
+        # Log error somewhere (e.g., to a file or just print)
+        print(f"Error during check: {e}")
+        return "❌ Error during check."
