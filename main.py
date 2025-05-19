@@ -70,3 +70,22 @@ def run_check():
         # Log error somewhere (e.g., to a file or just print)
         print(f"Error during check: {e}")
         return "❌ Error during check."
+
+from datetime import datetime
+
+@app.route('/dashboard')
+def dashboard():
+    if os.path.exists(HASHES_FILE):
+        with open(HASHES_FILE, "r") as f:
+            current_hashes = json.load(f)
+    else:
+        current_hashes = {}
+
+    html = "<h1>📊 School Monitoring Dashboard</h1><ul>"
+
+    for school, url in SCHOOL_URLS.items():
+        hash_val = current_hashes.get(school, "—")
+        html += f"<li><strong>{school}</strong>: <a href='{url}' target='_blank'>линк</a> — Хеш: <code>{hash_val}</code></li>"
+
+    html += f"</ul><p>⏱️ Последна проверка: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>"
+    return html
